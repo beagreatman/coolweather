@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.coolweather.app.model.City;
+import com.coolweather.app.model.County;
 import com.coolweather.app.model.Province;
 
-import android.R.string;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.renderscript.Type;
 
 public class CoolWeatherDB {
 	/**
@@ -65,7 +64,7 @@ public class CoolWeatherDB {
 	 * 从数据库中读取全国所有的省份信息
 	 * @return
 	 */
-	private List<Province> loadProvinces(){
+	public List<Province> loadProvinces(){
 		List<Province> list=new ArrayList<Province>();
 		Cursor cursor=db.query("Province", null, null, null, null, null, null);		
 		if (cursor.moveToFirst()) {
@@ -99,6 +98,66 @@ public class CoolWeatherDB {
 		}
 		return -1;
 	}
-	
+	/**
+	 * 从数据库中读取某省份下的所有城市信息
+	 * @return
+	 */
+	public List<City> loadCities(int provinceId){
+		List<City> list=new ArrayList<City>();
+		Cursor cursor=db.query("City", null, "province_id = ?", 
+				new String[]{String.valueOf(provinceId)}, null, null, null);		
+		if (cursor.moveToFirst()) {
+			do {
+				City city=new City();
+				city.setId(cursor.getInt(cursor.getColumnIndex("id")));
+				city.setCityName(cursor.getString(cursor.getColumnIndex("city_name")));
+				city.setCityCode(cursor.getString(cursor.getColumnIndex("city_code")));
+				city.setProvinceId(provinceId);
+				list.add(city);
+			} while (cursor.moveToNext());
+		}
+		if (cursor!=null) {
+			cursor.close();
+		}
+		return list;
+	}
+	/**
+	 * 将City的实例保存到数据库中
+	 * @param City
+	 * @return
+	 */
+	public long saveCounty(County county) {
+		if (county!=null) {
+			ContentValues values=new ContentValues();
+			values.put("county_name", county.getCountyName());
+			values.put("county_code", county.getCountyCode());
+			values.put("city_id", county.getCityId());
+			return db.insert("Ciry", null, values);
+		}
+		return -1;
+	}
+	/**
+	 * 从数据库中读取某省份下的所有城市信息
+	 * @return
+	 */
+	public List<County> loadCounties(int cityId){
+		List<County> list=new ArrayList<County>();
+		Cursor cursor=db.query("County", null, "city_id = ?", 
+				new String[]{String.valueOf(cityId)}, null, null, null);		
+		if (cursor.moveToFirst()) {
+			do {
+				County county=new County();
+				county.setId(cursor.getInt(cursor.getColumnIndex("id")));
+				county.setCountyName(cursor.getString(cursor.getColumnIndex("county_name")));
+				county.setCountyCode(cursor.getString(cursor.getColumnIndex("county_code")));
+				county.setCityId(cityId);
+				list.add(county);
+			} while (cursor.moveToNext());
+		}
+		if (cursor!=null) {
+			cursor.close();
+		}
+		return list;
+	}
 
 }
