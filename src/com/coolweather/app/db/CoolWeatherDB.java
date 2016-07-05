@@ -94,7 +94,7 @@ public class CoolWeatherDB {
 			values.put("city_name", city.getCityName());
 			values.put("city_code", city.getCityCode());
 			values.put("province_id", city.getProvinceId());
-			return db.insert("Ciry", null, values);
+			return db.insert("City", null, values);
 		}
 		return -1;
 	}
@@ -132,7 +132,7 @@ public class CoolWeatherDB {
 			values.put("county_name", county.getCountyName());
 			values.put("county_code", county.getCountyCode());
 			values.put("city_id", county.getCityId());
-			return db.insert("Ciry", null, values);
+			return db.insert("County", null, values);
 		}
 		return -1;
 	}
