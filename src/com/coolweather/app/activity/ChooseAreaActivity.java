@@ -55,12 +55,12 @@ public class ChooseAreaActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(this);
-		if (prefs.getBoolean("city_selected", false)) {
-			Intent intent =new Intent(this,WeatherActivity.class);
-			startActivity(intent);
-			finish();
-			return;
-		}
+//		if (prefs.getBoolean("city_selected", false)) {
+//			Intent intent =new Intent(this,WeatherActivity.class);
+//			startActivity(intent);
+//			finish();
+//			return;
+//		}
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.choose_area);
 		listView = (ListView) findViewById(R.id.list_view);

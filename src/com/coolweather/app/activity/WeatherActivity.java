@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
@@ -56,21 +57,20 @@ public class WeatherActivity extends Activity {
 		temp1Text.setText(prefs.getString("temp1", ""));
 		temp2Text.setText(prefs.getString("temp2", ""));
 		weatherDespText.setText(prefs.getString("weather_desp", ""));
-		publishText.setText(prefs.getString("publish_time", "") + "发布");
-		currentText.setText(prefs.getString("current_date", ""));
+		publishText.setText(prefs.getString("今天"+"publish_time", "") + "发布");
+		currentText.setText(prefs.getString("current_date", ""));	
 		weatherInfoLayout.setVisibility(View.VISIBLE);
 		cityNameText.setVisibility(View.VISIBLE);
 	}
 
 	private void queryWeatherCode(String countyCode) {
 		String address = "http://www.weather.com.cn/data/list3/city"
-				+ countyCode + ".xml";
-
-		http: // www.weather.com.cn/data/list3/city101110101.xml
+				+ countyCode + ".xml";		
 		queryFromServer(address, "countyCode");
 	}
 
 	private void queryFromServer(final String address, final String type) {
+		Log.d("WeatherActivity", address);
 		HttpUtil.sendHttpRequest(address, new HttpCallbackListener() {
 
 			@Override
@@ -110,10 +110,9 @@ public class WeatherActivity extends Activity {
 	}
 
 	private void queryWeatherInfo(String weatherCode) {
-		String address = "http://www.weather.com.cn/data/cityinfo"
+		String address = "http://www.weather.com.cn/data/cityinfo/"
 				+ weatherCode + ".html";
 		queryFromServer(address, "weatherCode");
 
-	}
-
+	}	
 }
