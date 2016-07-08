@@ -14,7 +14,6 @@ import com.coolweather.app.util.Utility;
 import com.coolweather.app.R;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -60,7 +59,6 @@ public class ChooseAreaActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		isFromWeatherActivity=getIntent().getBooleanExtra("from_weather_activity", false);
-		Log.d("isFromWeatherActivity", String.valueOf(isFromWeatherActivity));
 		SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(this);
 		if (prefs.getBoolean("city_selected", false)&&!isFromWeatherActivity) {
 			Intent intent =new Intent(this,WeatherActivity.class);

@@ -28,6 +28,7 @@ public class WeatherActivity extends Activity implements OnClickListener {
 	private TextView currentText;
 	private Button switchCity;
 	private Button refreshWeather;
+	private Exception exception;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +80,6 @@ public class WeatherActivity extends Activity implements OnClickListener {
 	}
 
 	private void queryFromServer(final String address, final String type) {
-		Log.d("WeatherActivity", address);
 		HttpUtil.sendHttpRequest(address, new HttpCallbackListener() {
 
 			@Override
@@ -106,11 +106,11 @@ public class WeatherActivity extends Activity implements OnClickListener {
 			}
 
 			@Override
-			public void onError(Exception e) {
+			public void onError(Exception e) {	
+				exception=e;
 				runOnUiThread(new Runnable() {
-
 					@Override
-					public void run() {
+					public void run() {						
 						publishText.setText("同步失败");
 					}
 				});
@@ -120,7 +120,7 @@ public class WeatherActivity extends Activity implements OnClickListener {
 
 	private void queryWeatherInfo(String weatherCode) {
 		String address = "http://www.weather.com.cn/data/cityinfo/"
-				+ weatherCode + ".html";
+				+ weatherCode + ".html";		
 		queryFromServer(address, "weatherCode");
 
 	}
@@ -138,7 +138,7 @@ public class WeatherActivity extends Activity implements OnClickListener {
 			publishText.setText("同步中...");
 			SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(this);
 			String weatherCode=prefs.getString("weather_code", "");
-			if (!TextUtils.isEmpty(weatherCode)) {
+			if (!TextUtils.isEmpty(weatherCode)) {				
 				queryWeatherInfo(weatherCode);				
 			}
 			break;
