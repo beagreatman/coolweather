@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.coolweather.app.R;
+import com.coolweather.app.receiver.AutoUpdateReciver;
+import com.coolweather.app.service.AutoUpdateService;
 import com.coolweather.app.util.HttpCallbackListener;
 import com.coolweather.app.util.HttpUtil;
 import com.coolweather.app.util.Utility;
@@ -28,7 +30,6 @@ public class WeatherActivity extends Activity implements OnClickListener {
 	private TextView currentText;
 	private Button switchCity;
 	private Button refreshWeather;
-	private Exception exception;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,8 @@ public class WeatherActivity extends Activity implements OnClickListener {
 		currentText.setText(prefs.getString("current_date", ""));	
 		weatherInfoLayout.setVisibility(View.VISIBLE);
 		cityNameText.setVisibility(View.VISIBLE);
+		Intent intent=new Intent(this,AutoUpdateService.class);
+		startService(intent);
 	}
 
 	private void queryWeatherCode(String countyCode) {
@@ -107,7 +110,6 @@ public class WeatherActivity extends Activity implements OnClickListener {
 
 			@Override
 			public void onError(Exception e) {	
-				exception=e;
 				runOnUiThread(new Runnable() {
 					@Override
 					public void run() {						
